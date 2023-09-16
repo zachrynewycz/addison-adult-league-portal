@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-function DivisionGroupSelection() {
+const DivisionGroupSelection = () => {
     const options = useMemo(
         () => [
             { label: "Division 1", value: 1 },
@@ -23,6 +23,6 @@ function DivisionGroupSelection() {
             ))}
         </div>
     );
-}
+};
 
 export default DivisionGroupSelection;

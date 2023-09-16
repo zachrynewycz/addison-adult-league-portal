@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBBmfLKhiH7tlPrw7U8vFWBrnh4HJktzvg",
-    authDomain: "addison-mens-league-portal.firebaseapp.com",
-    projectId: "addison-mens-league-portal",
-    storageBucket: "addison-mens-league-portal.appspot.com",
-    messagingSenderId: "344259104292",
-    appId: "1:344259104292:web:88df0e7a7f024ea1b952b1",
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGING_SENDER_ID,
+    appId: process.env.APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
