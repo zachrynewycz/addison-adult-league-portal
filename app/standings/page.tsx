@@ -1,7 +1,11 @@
+"use client";
+import DivisionGroupSelection from "../components/divisionGroupSelection/DivisonGroupSelection";
+
 function StandingsPage() {
     return (
-        <main>
-            <h1>Standings</h1>
+        <main className="py-10 mx-auto md:max-w-7xl">
+            <h1 className="font-calibre_semi_bold text-xl mb-5">Adult League Standings</h1>
+            <DivisionGroupSelection />
         </main>
     );
 }

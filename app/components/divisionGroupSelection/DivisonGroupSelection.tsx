@@ -1,23 +1,26 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 const DivisionGroupSelection = () => {
-    const options = useMemo(
-        () => [
-            { label: "Division 1", value: 1 },
-            { label: "Division 2", value: 2 },
-            { label: "Division 3", value: 3 },
-        ],
-        []
-    );
     const [selectedValue, setSelectedValue] = useState<number>(1);
 
-    // isActive={selectedValue === value}
-    // #f7f7f4
-    // #f0f0ee
+    const options = [
+        { label: "Division 1", value: 1 },
+        { label: "Division 2", value: 2 },
+        { label: "Division 3", value: 3 },
+    ];
+
     return (
-        <div>
+        <div className="bg-[#f0f0ee] w-fit flex rounded-md font-calibre_regular">
             {options.map(({ label, value }) => (
-                <button key={label} onClick={() => setSelectedValue(value)}>
+                <button
+                    className={`${
+                        selectedValue === value
+                            ? "px-8 bg-white border-neutral-300 border-[1px] rounded-md pt-2 pb-1"
+                            : "px-8 pt-2 pb-1"
+                    }`}
+                    key={label}
+                    onClick={() => setSelectedValue(value)}
+                >
                     {label}
                 </button>
             ))}

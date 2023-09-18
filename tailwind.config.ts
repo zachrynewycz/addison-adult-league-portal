@@ -7,7 +7,15 @@ const config: Config = {
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                calibre_bold: ["CalibreBold"],
+                calibre_medium: ["CalibreMedium"],
+                calibre_semi_bold: ["CalibreSemiBold"],
+                calibre_light: ["CalibreLight"],
+                calibre_regular: ["CalibreRegular"],
+            },
+        },
     },
     plugins: [],
 };

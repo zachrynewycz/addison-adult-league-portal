@@ -1,20 +1,25 @@
 "use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
+import LoginButton from "./LoginButton";
 
 const Nav = () => {
-    const pathname = usePathname();
-    //Remove "/" from url
-    const cleanedPathname = pathname.slice(1);
+    const pathname = useSelectedLayoutSegment();
 
     return (
-        <nav>
-            <Link className={`${cleanedPathname === "schedule" ? "" : ""}`} href="/schedule">
-                Schedule & Scores
-            </Link>
-            <Link className={`${cleanedPathname === "standings" ? "" : ""}`} href="/standings">
-                Standings
-            </Link>
+        <nav className="w-full px-10 py-4 bg-neutral-800 text-neutral-200 font-calibre_light text-lg">
+            <ul className="flex gap-12 justify-center">
+                <li>
+                    <a className={`${pathname === "schedule" && "font-calibre_medium text-white"}`} href="/schedule">
+                        Schedule & Scores
+                    </a>
+                </li>
+                <li>
+                    <a className={`${pathname === "standings" && "font-calibre_medium text-white"}`} href="/standings">
+                        Standings
+                    </a>
+                </li>
+            </ul>
+            <LoginButton />
         </nav>
     );
 };

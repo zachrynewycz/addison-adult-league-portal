@@ -1,5 +1,7 @@
+"use client";
 import "./globals.css";
 import type { Metadata } from "next";
+import Nav from "./components/nav/Nav";
 
 export const metadata: Metadata = {
     title: "Addison Adult League Portal",
@@ -9,7 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <Nav />
+                {children}
+            </body>
         </html>
     );
 }

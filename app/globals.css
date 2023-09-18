@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: CalibreBold;
+        src: url("/fonts/CalibreBold.otf");
+    }
+    @font-face {
+        font-family: CalibreSemiBold;
+        src: url("/fonts/CalibreSemiBold.otf");
+    }
+    @font-face {
+        font-family: CalibreMedium;
+        src: url("/fonts/CalibreMedium.otf");
+    }
+    @font-face {
+        font-family: CalibreRegular;
+        src: url("/fonts/CalibreRegular.otf");
+    }
+    @font-face {
+        font-family: CalibreLight;
+        src: url("/fonts/CalibreLight.otf");
+    }
+}
