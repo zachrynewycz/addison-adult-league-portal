@@ -1,5 +1,5 @@
 "use client";
-import DivisionGroupSelection from "../components/divisionGroupSelection/DivisonGroupSelection";
+import DivisionGroupSelection from "../components/DivisionGroupSelection/DivisonGroupSelection";
 
 function StandingsPage() {
     return (

@@ -1,4 +1,6 @@
+"use client";
 import { auth } from "@/app/firebase/config";
+import { isAdmin } from "@/app/firebase/functions/isAdmin";
 import { GoogleAuthProvider, signInWithRedirect, signOut } from "@firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -13,8 +15,15 @@ const LoginButton = () => {
 
             const provider = new GoogleAuthProvider();
             await signInWithRedirect(auth, provider);
+
+            //Check if user is an admin
+            console.log(user);
+            // const admin = await isAdmin(user?.currentUser?.uid);
+            // if (!admin) {
+            //     await signOut(auth);
+            // }
         } catch (error) {
-            console.error("There has been an issue authenticating you", error);
+            console.error("There has been an issue authenticating", error);
         }
     };
 

@@ -1,7 +1,7 @@
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../config";
 
-export const resetStandings = async () => {
+export const clearStandings = async () => {
     try {
         const standingsSnapshot = await getDocs(collection(db, "standings"));
 

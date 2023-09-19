@@ -1,7 +1,11 @@
-import { useState } from "react";
+"use client";
+import { setDivisionNumber } from "@/app/redux/slices/divisionSlice";
+import { RootState } from "@/app/redux/store";
+import { useSelector, useDispatch } from "react-redux";
 
 const DivisionGroupSelection = () => {
-    const [selectedValue, setSelectedValue] = useState<number>(1);
+    const dispatch = useDispatch();
+    const divisionNumber = useSelector((state: RootState) => state.division.divisionNumber);
 
     const options = [
         { label: "Division 1", value: 1 },
@@ -14,12 +18,12 @@ const DivisionGroupSelection = () => {
             {options.map(({ label, value }) => (
                 <button
                     className={`${
-                        selectedValue === value
+                        divisionNumber === value
                             ? "px-8 bg-white border-neutral-300 border-[1px] rounded-md pt-2 pb-1"
                             : "px-8 pt-2 pb-1"
                     }`}
                     key={label}
-                    onClick={() => setSelectedValue(value)}
+                    onClick={() => dispatch(setDivisionNumber(value))}
                 >
                     {label}
                 </button>
