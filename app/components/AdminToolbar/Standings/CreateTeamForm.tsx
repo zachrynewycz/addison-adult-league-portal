@@ -1,50 +1,63 @@
+"use client";
 import Modal from "../../Shared/Modal";
-import { Formik, Form, Field, FormikValues } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/app/redux/store";
-import { toggleCreateTeamModal } from "@/app/redux/slices/modalSlice";
+import { Formik, Form, Field } from "formik";
+import { toggleUpdateScoreModal } from "@/app/redux/slices/modalSlice";
+import { addTeamStanding } from "@/app/firebase/functions/addTeamStanding";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 
 interface IValues {
-    teamName: string;
+    name: string;
     division: number;
 }
 
+const initialValues: IValues = {
+    name: "",
+    division: 1,
+};
+
 const CreateTeamForm = () => {
-    const dispatch = useDispatch();
-    const modalState = useSelector((state: RootState) => state.modal.isCreateTeamModalOpen);
+    const dispatch = useAppDispatch();
+    const modalState = useAppSelector((state) => state.modal.isCreateTeamModalOpen);
 
-    const initialValues: IValues = {
-        teamName: "",
-        division: 1,
-    };
-
-    const handleSubmit = (values: FormikValues, { resetForm }: any) => {
-        console.log(values);
+    const handleSubmit = (values: IValues, { resetForm }: any) => {
+        addTeamStanding(values.name, values.division);
         resetForm();
     };
 
     return (
         <Modal isOpen={modalState}>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                <Form>
-                    <>
-                        <label htmlFor="teamName">Team Name:</label>
-                        <Field type="text" name="teamName" />
-                    </>
+                <Form className="text-lg">
+                    <h1 className="font-calibre_semi_bold text-2xl">Add team to standing</h1>
 
-                    <>
-                        <label htmlFor="division">Division:</label>
-                        <Field name="division" as="select">
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                        </Field>
-                    </>
-
-                    <div>
-                        <button onClick={() => dispatch(toggleCreateTeamModal())}>Close</button>
-                        <button type="submit">Create</button>
+                    <div className="flex gap-5">
+                        <div>
+                            <label htmlFor="teamName">Team Name</label>
+                            <Field type="text" name="teamName" className="form-normal-input" />
+                        </div>
+                        <div>
+                            <label htmlFor="division">Division</label>
+                            <Field name="division" id="division" as="select" className="form-normal-input">
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                            </Field>
+                        </div>
                     </div>
+
+                    <button
+                        className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
+                        type="submit"
+                    >
+                        Create
+                    </button>
+                    <button
+                        type="button"
+                        className="text-neutral-400 w-full mt-2 font-calibre_regular"
+                        onClick={() => dispatch(toggleUpdateScoreModal())}
+                    >
+                        Close
+                    </button>
                 </Form>
             </Formik>
         </Modal>

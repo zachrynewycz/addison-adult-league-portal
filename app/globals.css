@@ -23,4 +23,51 @@
         font-family: CalibreLight;
         src: url("/fonts/CalibreLight.otf");
     }
+
+    label {
+        margin-top: 1rem;
+        display: block;
+        color: gray;
+        font-family: CalibreRegular;
+    }
+
+    .form-select {
+        width: 100%;
+        border: 1px solid gray;
+        border-radius: 0.4rem;
+        padding: 6px 10px;
+    }
+
+    .form-normal-input {
+        border: 1px solid gray;
+        border-radius: 0.4rem;
+        padding: 6px 10px;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    thead {
+        border-bottom: 1px solid #f0f0ee;
+        border-top: 1px solid #f0f0ee;
+    }
+
+    .standings-table th,
+    .standings-table td {
+        padding: 15px 0;
+        text-align: left;
+    }
+
+    .standings-table th:first-child {
+        width: 40%;
+    }
+
+    .standings-table th:not(:first-child) {
+        width: calc((100% - 40%) / 7);
+    }
+
+    tr:nth-child(even) {
+        background-color: #f0f0ee;
+    }
 }

@@ -1,19 +1,15 @@
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../config";
+import { signOut } from "firebase/auth";
+import { auth, db } from "../config";
 
-export const isAdmin = async (uid: string): Promise<boolean> => {
+export const isAdmin = async (uid: string) => {
     try {
-        const ref = doc(db, "admin", "authenticated_uids");
-        const adminDoc = await getDoc(ref);
+        const adminDoc = await getDoc(doc(db, "admins", "authenticated_uids"));
 
-        if (adminDoc.exists()) {
-            const authenticatedUid: string = adminDoc.data().addison_ice_uid;
-            return authenticatedUid === uid;
+        if (!adminDoc.exists() || adminDoc.data().addison_ice_uid !== uid) {
+            await signOut(auth);
         }
-
-        return false;
     } catch (error) {
         console.error("Error checking admin status:", error);
-        return false;
     }
 };

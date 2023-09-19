@@ -3,11 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 interface ModalState {
     isCreateEventModalOpen: boolean;
     isCreateTeamModalOpen: boolean;
+    isUpdateScoreModalOpen: boolean;
 }
 
 const initialState: ModalState = {
     isCreateEventModalOpen: false,
     isCreateTeamModalOpen: false,
+    isUpdateScoreModalOpen: false,
 };
 
 const modalSlice = createSlice({
@@ -20,8 +22,11 @@ const modalSlice = createSlice({
         toggleCreateTeamModal: (state) => {
             state.isCreateTeamModalOpen = !state.isCreateTeamModalOpen;
         },
+        toggleUpdateScoreModal: (state) => {
+            state.isUpdateScoreModalOpen = !state.isUpdateScoreModalOpen;
+        },
     },
 });
 
-export const { toggleCreateEventModal, toggleCreateTeamModal } = modalSlice.actions;
+export const { toggleCreateEventModal, toggleUpdateScoreModal, toggleCreateTeamModal } = modalSlice.actions;
 export default modalSlice;

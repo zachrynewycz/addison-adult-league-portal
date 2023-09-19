@@ -1,5 +1,6 @@
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
+import { format } from "date-fns";
 
 interface Event {
     homeTeam: string;
@@ -13,9 +14,13 @@ interface Event {
 export const addEvent = async (event: Event) => {
     try {
         const docData = {
-            ...event,
-            home_score: 0,
-            away_score: 0,
+            home_team: event.homeTeam,
+            away_team: event.awayTeam,
+            division: event.division,
+            date: event.date,
+            time: format(new Date(event.time), "h:mm a"),
+            rink: event.rink,
+            score: "",
         };
 
         await addDoc(collection(db, "schedule"), docData);

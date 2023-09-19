@@ -1,11 +1,10 @@
 "use client";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { setDivisionNumber } from "@/app/redux/slices/divisionSlice";
-import { RootState } from "@/app/redux/store";
-import { useSelector, useDispatch } from "react-redux";
 
 const DivisionGroupSelection = () => {
-    const dispatch = useDispatch();
-    const divisionNumber = useSelector((state: RootState) => state.division.divisionNumber);
+    const dispatch = useAppDispatch();
+    const divisionNumber = useAppSelector((state) => state.division.divisionNumber);
 
     const options = [
         { label: "Division 1", value: 1 },
