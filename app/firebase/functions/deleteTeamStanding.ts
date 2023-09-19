@@ -1,7 +1,7 @@
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../config";
 
-export const removeTeamFromStandings = async (docId: string) => {
+export const deleteStanding = async (docId: string) => {
     try {
         const ref = doc(db, "standings", docId);
         await deleteDoc(ref);
