@@ -9,10 +9,8 @@ const LoginButton = () => {
     const [user] = useAuthState(auth);
 
     useEffect(() => {
-        const checkAdmin = async () => {
-            if (user) await isAdmin(user.uid);
-        };
-        checkAdmin();
+        if (!user) return;
+        isAdmin(user.uid);
     }, [user]);
 
     const handleLogin = async () => {

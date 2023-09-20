@@ -33,7 +33,7 @@ const StandingTable = () => {
         <table className="text-neutral-500 mt-10 standings-table">
             <thead className="font-calibre_light">
                 <tr>
-                    <th>Team</th>
+                    <th>TEAM</th>
                     <th>GP</th>
                     <th>W</th>
                     <th>L</th>
@@ -44,7 +44,7 @@ const StandingTable = () => {
                 </tr>
             </thead>
             <tbody className="font-calibre_light">
-                {standings?.map((doc) => (
+                {standings.map((doc) => (
                     <Row key={doc.id} teamData={doc} />
                 ))}
             </tbody>
