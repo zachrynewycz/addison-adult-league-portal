@@ -18,6 +18,11 @@ const Nav = () => {
                         Standings
                     </a>
                 </li>
+                <li>
+                    <a className={`${pathname === "playoffs" && "font-calibre_medium text-white"}`} href="/playoffs">
+                        Playoffs
+                    </a>
+                </li>
             </ul>
             <LoginButton />
         </nav>
