@@ -1,12 +1,11 @@
-"use client";
-import Modal from "../../Shared/Modal";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toggleCreateEventModal } from "@/app/redux/slices/modalSlice";
 import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
 import { addEvent } from "@/app/firebase/functions/addEvent";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import Modal from "../../Shared/Modal";
 
 interface IValues {
     homeTeam: string;
@@ -22,6 +21,14 @@ const initialValues: IValues = {
     date: "",
     time: "",
     rink: "",
+};
+
+const validateForm = (values: IValues) => {
+    const errors: any = {};
+
+    if (!values.date) errors.date = "Date is required";
+    if (!values.time) errors.time = "Time is required";
+    return errors;
 };
 
 const CreateEventForm = () => {
@@ -41,18 +48,22 @@ const CreateEventForm = () => {
     }, []);
 
     const handleSubmit = (values: IValues, { resetForm }: any) => {
+        console.log(values);
         addEvent({ ...values, division });
         resetForm();
     };
 
+    if (!teams || teams.length === 0) return null;
+
     return (
         <Modal isOpen={modalState}>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
                 <Form className="text-lg">
                     <h1 className="font-calibre_semi_bold text-2xl">Create new event</h1>
 
                     <label htmlFor="homeTeam">Home Team</label>
                     <Field name="homeTeam" id="homeTeam" as="select" className="form-select">
+                        <option value="">Select Home Team</option>
                         {teams.map((team, idx) => (
                             <option key={idx} value={team}>
                                 {team}
@@ -62,6 +73,7 @@ const CreateEventForm = () => {
 
                     <label htmlFor="awayTeam">Away Team</label>
                     <Field name="awayTeam" id="awayTeam" as="select" className="form-select">
+                        <option value="">Select Away Team</option>
                         {teams.map((team, idx) => (
                             <option key={idx} value={team}>
                                 {team}
@@ -71,6 +83,7 @@ const CreateEventForm = () => {
 
                     <label htmlFor="rink">Rink</label>
                     <Field name="rink" id="rink" as="select" className="form-select">
+                        <option value="">Select Rink</option>
                         <option value="OLY">OLY</option>
                         <option value="NHL">NHL</option>
                     </Field>
@@ -79,11 +92,13 @@ const CreateEventForm = () => {
                         <div>
                             <label htmlFor="date">Date</label>
                             <Field name="date" id="date" type="date" className="form-normal-input" />
+                            <ErrorMessage name="date" component="div" className="error-message" />
                         </div>
 
                         <div>
                             <label htmlFor="time">Time</label>
                             <Field name="time" id="time" type="time" className="form-normal-input" />
+                            <ErrorMessage name="time" component="div" className="error-message" />
                         </div>
                     </div>
 

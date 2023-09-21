@@ -1,38 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useAppSelector } from "../redux/hooks";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "../firebase/config";
 import Row from "./Row";
+import useSchedule from "@/app/hooks/useSchedule";
 
 const ScheduleTable = () => {
-    const [schedule, setSchedule] = useState<any[]>([]);
-    const { divisionNumber } = useAppSelector((state) => state.division);
-
-    useEffect(() => {
-        const fetchSchedule = async () => {
-            const q = query(
-                collection(db, "schedule"),
-                where("division", "==", divisionNumber),
-                orderBy("date", "asc")
-            );
-            const docSnapshot = await getDocs(q);
-
-            const scheduleData = docSnapshot.docs.map((doc) => {
-                return { id: doc.id, ...doc.data() };
-            });
-            setSchedule(scheduleData);
-        };
-        fetchSchedule();
-    }, [divisionNumber]);
+    const schedule = useSchedule();
 
     if (schedule.length === 0) {
-        return <h1 className="font-calibre_regular text-xl mt-10">There are no games in this division</h1>;
+        return <h1 className="font-calibre_regular text-xl mt-10">There are no scheduled games in this division</h1>;
     }
 
     return (
-        <table className="text-neutral-500 mt-10">
-            <thead className="font-calibre_light">
+        <table className="text-neutral-700 mt-10 font-calibre_light schedule-table">
+            <thead className="text-sm">
                 <tr>
                     <th>HOME</th>
                     <th>AWAY</th>
@@ -42,7 +21,7 @@ const ScheduleTable = () => {
                     <th>SCORE</th>
                 </tr>
             </thead>
-            <tbody className="font-calibre_light">
+            <tbody>
                 {schedule.map((doc) => (
                     <Row key={doc.id} eventData={doc} />
                 ))}

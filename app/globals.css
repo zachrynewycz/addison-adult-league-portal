@@ -53,9 +53,15 @@
         border-top: 1px solid #f0f0ee;
     }
 
+    .standings-table th:first-child,
+    .standings-table td:first-child {
+        padding: 13px 25px;
+        text-align: left;
+    }
+
     .standings-table th,
     .standings-table td {
-        padding: 15px 0;
+        padding: 13px 0;
         text-align: left;
     }
 
@@ -69,5 +75,37 @@
 
     tr:nth-child(even) {
         background-color: #f0f0ee;
+    }
+
+    .schedule-table th {
+        width: calc(100% / 6);
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        text-align: center;
+        padding: 13px 0;
+    }
+
+    .error-message {
+        color: red;
+    }
+
+    .toolbar-btn {
+        padding: 0.5rem 0.75rem 0.25rem 0.75rem;
+        border: 1px solid #d4d4d4;
+        border-radius: 0.375rem;
+        font-family: CalibreRegular;
+        margin: 0 5px;
+    }
+    .toolbar-btn:hover {
+        transform: scale(1.05);
+    }
+
+    .toolbar-btn > img {
+        display: inline;
+        padding-bottom: 0.125rem;
+        width: 1.25rem;
+        margin-left: 0.25rem;
     }
 }

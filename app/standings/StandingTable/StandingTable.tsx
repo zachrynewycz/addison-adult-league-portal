@@ -1,37 +1,16 @@
-import { useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "../../firebase/config";
-import { useAppSelector } from "../../redux/hooks";
+import useStandings from "@/app/hooks/useStandings";
 import Row from "./Row";
 
 const StandingTable = () => {
-    const [standings, setStandings] = useState<any[]>([]);
-    const { divisionNumber } = useAppSelector((state) => state.division);
-
-    useEffect(() => {
-        const fetchStandings = async () => {
-            const q = query(
-                collection(db, "standings"),
-                where("division", "==", divisionNumber),
-                orderBy("points", "desc")
-            );
-            const docSnapshot = await getDocs(q);
-
-            const standingsData = docSnapshot.docs.map((doc) => {
-                return { id: doc.id, ...doc.data() };
-            });
-            setStandings(standingsData);
-        };
-        fetchStandings();
-    }, [divisionNumber]);
+    const standings = useStandings();
 
     if (standings.length === 0) {
         return <h1 className="font-calibre_regular text-xl mt-10">There are no teams in this division</h1>;
     }
 
     return (
-        <table className="text-neutral-500 mt-10 standings-table">
-            <thead className="font-calibre_light">
+        <table className="text-neutral-700 mt-10 standings-table font-calibre_light">
+            <thead className="text-sm">
                 <tr>
                     <th>TEAM</th>
                     <th>GP</th>
@@ -43,7 +22,7 @@ const StandingTable = () => {
                     <th>GA</th>
                 </tr>
             </thead>
-            <tbody className="font-calibre_light">
+            <tbody>
                 {standings.map((doc) => (
                     <Row key={doc.id} teamData={doc} />
                 ))}

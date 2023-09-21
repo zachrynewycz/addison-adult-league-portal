@@ -1,9 +1,8 @@
-"use client";
-import Modal from "../../Shared/Modal";
 import { Formik, Form, Field } from "formik";
 import { toggleUpdateScoreModal } from "@/app/redux/slices/modalSlice";
 import { addTeamStanding } from "@/app/firebase/functions/addTeamStanding";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import Modal from "../../Shared/Modal";
 
 interface IValues {
     name: string;
@@ -38,6 +37,7 @@ const CreateTeamForm = () => {
                         <div>
                             <label htmlFor="division">Division</label>
                             <Field name="division" id="division" as="select" className="form-normal-input">
+                                <option value="">Select Divison</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
                                 <option value={3}>3</option>

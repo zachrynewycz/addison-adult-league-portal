@@ -1,4 +1,3 @@
-"use client";
 import { Field, Form, Formik } from "formik";
 import Modal from "../../Shared/Modal";
 import { updateScore } from "@/app/firebase/functions/updateScore";

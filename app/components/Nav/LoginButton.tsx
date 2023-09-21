@@ -1,4 +1,3 @@
-"use client";
 import { auth } from "@/app/firebase/config";
 import { isAdmin } from "@/app/firebase/functions/isAdmin";
 import { GoogleAuthProvider, signInWithRedirect, signOut } from "@firebase/auth";
@@ -26,7 +25,7 @@ const LoginButton = () => {
     };
 
     return (
-        <button className="absolute top-4 right-10 text-neutral-500 font-calibre_regular" onClick={handleLogin}>
+        <button className="absolute top-4 right-10 text-neutral-200 font-calibre_regular" onClick={handleLogin}>
             {user ? "Logout" : "Login"}
         </button>
     );
