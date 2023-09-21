@@ -1,11 +1,11 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+// "use client";
+// import { useRouter } from "next/navigation";
+// import { useLayoutEffect } from "react";
 
-export default function Home() {
-    const router = useRouter();
+// export default function Home() {
+//     const router = useRouter();
 
-    useEffect(() => router.replace("/schedule"), []);
+//     useLayoutEffect(() => router.replace("/schedule"), []);
 
-    return <></>;
-}
+//     return <></>;
+// }
