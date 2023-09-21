@@ -1,6 +1,6 @@
 "use client";
 import DivisionGroupSelection from "../components/DivisionGroupSelection/DivisonGroupSelection";
-import StandingTable from "./StandingTable";
+import StandingTable from "./StandingTable/StandingTable";
 
 function StandingsPage() {
     return (

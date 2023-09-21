@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { db } from "../firebase/config";
-import { useAppSelector } from "../redux/hooks";
+import { db } from "../../firebase/config";
+import { useAppSelector } from "../../redux/hooks";
 import Row from "./Row";
 
 const StandingTable = () => {

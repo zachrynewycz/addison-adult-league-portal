@@ -9,3 +9,8 @@
 
 //     return <></>;
 // }
+
+
+//Check root path change in config.
+//check if api endpoint is better or firebase functions
+//check addEvent timestamp from date

@@ -9,19 +9,17 @@ const LoginButton = () => {
     const [user] = useAuthState(auth);
 
     useEffect(() => {
-        if (!user) return;
-        isAdmin(user.uid);
+        user ? isAdmin(user.uid) : null;
     }, [user]);
 
     const handleLogin = async () => {
         try {
             if (user) {
                 await signOut(auth);
-                return;
+            } else {
+                const provider = new GoogleAuthProvider();
+                await signInWithRedirect(auth, provider);
             }
-
-            const provider = new GoogleAuthProvider();
-            await signInWithRedirect(auth, provider);
         } catch (error) {
             console.error("There has been an issue authenticating", error);
         }
