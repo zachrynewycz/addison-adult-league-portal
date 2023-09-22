@@ -1,13 +1,13 @@
-import React from "react";
 import { useSelectedLayoutSegment } from "next/navigation";
 import LoginButton from "./LoginButton";
+import Sidebar from "./Sidebar";
 
 const Nav = () => {
     const pathname = useSelectedLayoutSegment();
 
     return (
-        <nav className="w-full py-4 bg-neutral-800 text-neutral-200 font-calibre_light text-lg">
-            <ul className="flex max-w-lg mx-auto text-center">
+        <nav className="w-full py-4 bg-neutral-800 text-neutral-200 font-calibre_light text-lg grid-cols-3 grid">
+            <ul className="hidden md:flex mx-auto gap-16 col-start-2">
                 <li className="flex-1">
                     <a
                         className={`${pathname === "schedule" ? "font-calibre_medium text-white" : ""}`}
@@ -33,7 +33,11 @@ const Nav = () => {
                     </a>
                 </li>
             </ul>
-            <LoginButton />
+
+            <div className="col-start-3 text-right px-10">
+                <LoginButton />
+                <Sidebar />
+            </div>
         </nav>
     );
 };

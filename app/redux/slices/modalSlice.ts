@@ -4,12 +4,14 @@ interface ModalState {
     isCreateEventModalOpen: boolean;
     isCreateTeamModalOpen: boolean;
     isUpdateScoreModalOpen: boolean;
+    isSidebarOpen: boolean;
 }
 
 const initialState: ModalState = {
     isCreateEventModalOpen: false,
     isCreateTeamModalOpen: false,
     isUpdateScoreModalOpen: false,
+    isSidebarOpen: false,
 };
 
 const modalSlice = createSlice({
@@ -25,8 +27,12 @@ const modalSlice = createSlice({
         toggleUpdateScoreModal: (state) => {
             state.isUpdateScoreModalOpen = !state.isUpdateScoreModalOpen;
         },
+        toggleSidebar: (state) => {
+            state.isSidebarOpen = !state.isSidebarOpen;
+        },
     },
 });
 
-export const { toggleCreateEventModal, toggleUpdateScoreModal, toggleCreateTeamModal } = modalSlice.actions;
+export const { toggleCreateEventModal, toggleUpdateScoreModal, toggleCreateTeamModal, toggleSidebar } =
+    modalSlice.actions;
 export default modalSlice;

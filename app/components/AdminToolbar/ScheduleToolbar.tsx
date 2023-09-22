@@ -1,13 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { toggleCreateEventModal } from "@/app/redux/slices/modalSlice";
 import { clearScheduleByDivision } from "@/app/firebase/functions/clearScheduleByDivision";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/app/firebase/config";
 import CreateEventForm from "./Forms/CreateEventForm";
+import AuthCheck from "../Shared/AuthCheck";
 
 const ScheduleToolbar = () => {
-    const [user] = useAuthState(auth);
-
     const dispatch = useAppDispatch();
     const { divisionNumber } = useAppSelector((state) => state.division);
 
@@ -19,21 +16,18 @@ const ScheduleToolbar = () => {
         if (wantsToDelete) clearScheduleByDivision(divisionNumber);
     };
 
-    // if (!user) return null;
-
     return (
-        <div>
+        <AuthCheck>
             <button className="toolbar-btn" onClick={() => dispatch(toggleCreateEventModal())}>
                 Create event <img src="/icons/file-plus.svg" alt="add-event" />
             </button>
 
             <button className="toolbar-btn" onClick={handleClearAll}>
-                Delete all
-                <img src="/icons/trash.svg" alt="delete-all" />
+                Delete all <img src="/icons/trash.svg" alt="delete-all" />
             </button>
 
             <CreateEventForm />
-        </div>
+        </AuthCheck>
     );
 };
 

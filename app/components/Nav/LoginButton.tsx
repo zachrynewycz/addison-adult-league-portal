@@ -8,7 +8,7 @@ const LoginButton = () => {
     const [user] = useAuthState(auth);
 
     useEffect(() => {
-        user ? isAdmin(user.uid) : null;
+        user && isAdmin(user.uid);
     }, [user]);
 
     const handleLogin = async () => {
@@ -25,7 +25,7 @@ const LoginButton = () => {
     };
 
     return (
-        <button className="absolute top-4 right-10 text-neutral-200 font-calibre_regular" onClick={handleLogin}>
+        <button className="text-neutral-200 font-calibre_regular hidden md:inline" onClick={handleLogin}>
             {user ? "Logout" : "Login"}
         </button>
     );
