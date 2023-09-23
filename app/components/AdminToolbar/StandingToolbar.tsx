@@ -1,12 +1,8 @@
-import { useAppDispatch } from "@/app/redux/hooks";
 import AuthCheck from "../Shared/AuthCheck";
 import CreateTeamForm from "./Forms/CreateTeamForm";
-import { toggleCreateTeamModal } from "@/app/redux/slices/modalSlice";
 import { resetStandingsToZero } from "@/app/firebase/functions/resetStandingsToZero";
 
 const StandingToolbar = () => {
-    const dispatch = useAppDispatch();
-
     const handleResetStandings = () => {
         if (confirm("Are you sure you want to reset all standings to 0")) {
             resetStandingsToZero();
@@ -16,14 +12,11 @@ const StandingToolbar = () => {
     return (
         <AuthCheck>
             <div>
-                <button className="toolbar-btn" onClick={() => dispatch(toggleCreateTeamModal())}>
-                    Add team <img src="/icons/user-plus.svg" />
-                </button>
+                <CreateTeamForm />
+
                 <button className="toolbar-btn" onClick={handleResetStandings}>
                     Reset standings <img src="/icons/refresh-cw.svg" />
                 </button>
-
-                <CreateTeamForm />
             </div>
         </AuthCheck>
     );

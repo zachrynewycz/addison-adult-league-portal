@@ -3,14 +3,16 @@ import { createSlice } from "@reduxjs/toolkit";
 interface ModalState {
     isCreateEventModalOpen: boolean;
     isCreateTeamModalOpen: boolean;
-    isUpdateScoreModalOpen: boolean;
+    isUpdateEventModalOpen: boolean;
+    isUpdateStandingModalOpen: boolean;
     isSidebarOpen: boolean;
 }
 
 const initialState: ModalState = {
     isCreateEventModalOpen: false,
     isCreateTeamModalOpen: false,
-    isUpdateScoreModalOpen: false,
+    isUpdateEventModalOpen: false,
+    isUpdateStandingModalOpen: false,
     isSidebarOpen: false,
 };
 
@@ -24,8 +26,11 @@ const modalSlice = createSlice({
         toggleCreateTeamModal: (state) => {
             state.isCreateTeamModalOpen = !state.isCreateTeamModalOpen;
         },
-        toggleUpdateScoreModal: (state) => {
-            state.isUpdateScoreModalOpen = !state.isUpdateScoreModalOpen;
+        toggleUpdateEventModal: (state) => {
+            state.isUpdateEventModalOpen = !state.isUpdateEventModalOpen;
+        },
+        toggleUpdateStandingModal: (state) => {
+            state.isUpdateStandingModalOpen = !state.isUpdateStandingModalOpen;
         },
         toggleSidebar: (state) => {
             state.isSidebarOpen = !state.isSidebarOpen;
@@ -33,6 +38,12 @@ const modalSlice = createSlice({
     },
 });
 
-export const { toggleCreateEventModal, toggleUpdateScoreModal, toggleCreateTeamModal, toggleSidebar } =
-    modalSlice.actions;
+export const {
+    toggleCreateEventModal,
+    toggleUpdateEventModal,
+    toggleCreateTeamModal,
+    toggleSidebar,
+    toggleUpdateStandingModal,
+} = modalSlice.actions;
+
 export default modalSlice;

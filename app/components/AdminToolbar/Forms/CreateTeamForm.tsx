@@ -31,44 +31,50 @@ const CreateTeamForm = () => {
     };
 
     return (
-        <Modal isOpen={isCreateTeamModalOpen}>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
-                <Form className="text-lg">
-                    <h1 className="font-calibre_semi_bold text-2xl">Add team</h1>
+        <>
+            <button className="toolbar-btn" onClick={() => dispatch(toggleCreateTeamModal())}>
+                Add team <img src="/icons/user-plus.svg" />
+            </button>
 
-                    <div className="flex gap-5">
-                        <div>
-                            <label htmlFor="name">Team Name</label>
-                            <Field type="text" name="name" className="form-normal-input" />
-                            <ErrorMessage name="name" component="div" className="error-message" />
-                        </div>
-                        <div>
-                            <label htmlFor="division">Division</label>
-                            <Field name="division" id="division" as="select" className="form-normal-input">
-                                <option value="">Select division</option>
-                                <option value={1}>1</option>
-                                <option value={2}>2</option>
-                                <option value={3}>3</option>
-                            </Field>
-                        </div>
-                    </div>
+            <Modal isOpen={isCreateTeamModalOpen}>
+                <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
+                    <Form className="text-lg">
+                        <h1 className="font-calibre_semi_bold text-2xl">Add team</h1>
 
-                    <button
-                        className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
-                        type="submit"
-                    >
-                        Create
-                    </button>
-                    <button
-                        type="button"
-                        className="text-neutral-400 w-full mt-2 font-calibre_regular"
-                        onClick={() => dispatch(toggleCreateTeamModal())}
-                    >
-                        Close
-                    </button>
-                </Form>
-            </Formik>
-        </Modal>
+                        <div className="flex gap-5">
+                            <div>
+                                <label htmlFor="name">Team Name</label>
+                                <Field type="text" name="name" className="form-normal-input" />
+                                <ErrorMessage name="name" component="div" className="error-message" />
+                            </div>
+                            <div>
+                                <label htmlFor="division">Division</label>
+                                <Field name="division" id="division" as="select" className="form-normal-input">
+                                    <option value="">Select division</option>
+                                    <option value={1}>1</option>
+                                    <option value={2}>2</option>
+                                    <option value={3}>3</option>
+                                </Field>
+                            </div>
+                        </div>
+
+                        <button
+                            className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
+                            type="submit"
+                        >
+                            Create
+                        </button>
+                        <button
+                            type="button"
+                            className="text-neutral-400 w-full mt-2 font-calibre_regular"
+                            onClick={() => dispatch(toggleCreateTeamModal())}
+                        >
+                            Close
+                        </button>
+                    </Form>
+                </Formik>
+            </Modal>
+        </>
     );
 };
 

@@ -1,69 +1,76 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { toggleCreateEventModal } from "@/app/redux/slices/modalSlice";
+import { toggleCreateEventModal, toggleUpdateEventModal } from "@/app/redux/slices/modalSlice";
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/app/firebase/config";
-import { addEvent } from "@/app/firebase/functions/addEvent";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import Modal from "../../Shared/Modal";
+import { updateEvent } from "@/app/firebase/functions/updateEvent";
 
 interface IValues {
     home_team: string;
     away_team: string;
+    away_score: number;
+    home_score: number;
     date: string;
     time: string;
     rink: string;
+    status: string;
+    division: number;
 }
 
-const initialValues: IValues = {
-    home_team: "",
-    away_team: "",
-    date: "",
-    time: "",
-    rink: "",
-};
-
-const validateForm = (values: IValues) => {
-    const errors: any = {};
-
-    if (!values.date) errors.date = "Required";
-    if (!values.time) errors.time = "Required";
-    return errors;
-};
-
-const CreateEventForm = () => {
+const UpdateEventForm = ({ docId }: { docId: string }) => {
     const dispatch = useAppDispatch();
-    const { isCreateEventModalOpen } = useAppSelector((state) => state.modal);
+    const { isUpdateEventModalOpen } = useAppSelector((state) => state.modal);
     const { divisionNumber } = useAppSelector((state) => state.division);
 
     const [teams, setTeams] = useState<string[]>([]);
+    const [initialValues, setInitailValues] = useState<IValues>({
+        home_team: "",
+        away_team: "",
+        away_score: 0,
+        home_score: 0,
+        date: "",
+        time: "",
+        rink: "",
+        status: "",
+        division: 1,
+    });
+
+    useEffect(() => {
+        const getDocData = async () => {
+            const docSnap = await getDoc(doc(db, "schedule", docId));
+
+            if (docSnap.exists()) {
+                const data: any = docSnap.data();
+                setInitailValues({ ...data });
+            }
+            alert("Error getting document data");
+        };
+        getDocData();
+    }, [docId]);
 
     useEffect(() => {
         const getTeams = async () => {
             const q = query(collection(db, "standings"), where("division", "==", divisionNumber));
             const teamNamesArray = (await getDocs(q)).docs.map((doc) => doc.data().name);
-
-            if (teamNamesArray.length === 0) {
-                alert("Add a team in the standings to create an event");
-            }
             setTeams(teamNamesArray);
         };
         getTeams();
-    }, []);
+    }, [divisionNumber]);
 
-    const handleSubmit = (values: IValues, { resetForm }: any) => {
-        addEvent({ ...values, division: divisionNumber });
-        resetForm();
+    const handleSubmit = (values: IValues) => {
+        updateEvent(values, docId);
     };
 
     return (
         <>
-            <button className="toolbar-btn" onClick={() => dispatch(toggleCreateEventModal())}>
-                Create event <img src="/icons/file-plus.svg" alt="add-event" />
+            <button className="" onClick={() => dispatch(toggleUpdateEventModal())}>
+                <img src="/icons/edit-3.svg" alt="edit" />
             </button>
 
-            <Modal isOpen={isCreateEventModalOpen}>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
+            <Modal isOpen={isUpdateEventModalOpen}>
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     <Form className="text-lg">
                         <h1 className="font-calibre_semi_bold text-2xl">Create new event</h1>
 
@@ -108,11 +115,46 @@ const CreateEventForm = () => {
                             </div>
                         </div>
 
+                        <div className="flex justify-around">
+                            <div>
+                                <label htmlFor="home_score">Home Score</label>
+                                <input
+                                    type="number"
+                                    name="home_score"
+                                    id="home_score"
+                                    placeholder="0"
+                                    defaultValue={0}
+                                    min={0}
+                                    className="form-normal-input w-20 text-4xl"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="away_score">Away Score</label>
+                                <input
+                                    type="number"
+                                    name="away_score"
+                                    id="away_score"
+                                    placeholder="0"
+                                    defaultValue={0}
+                                    min={0}
+                                    className="form-normal-input w-20 text-4xl"
+                                />
+                            </div>
+                        </div>
+
+                        <label htmlFor="status">Game Status</label>
+                        <Field name="status" id="status" as="select" className="form-select">
+                            <option value="">Upcoming</option>
+                            <option value="">Final</option>
+                            <option value="OT">Final OT</option>
+                            <option value="SO">Final SO</option>
+                        </Field>
+
                         <button
                             className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
                             type="submit"
                         >
-                            Create
+                            Update
                         </button>
 
                         <button
@@ -129,4 +171,4 @@ const CreateEventForm = () => {
     );
 };
 
-export default CreateEventForm;
+export default UpdateEventForm;
