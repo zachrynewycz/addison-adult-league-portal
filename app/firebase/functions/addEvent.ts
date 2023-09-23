@@ -14,8 +14,6 @@ interface Event {
 export const addEvent = async (event: Event) => {
     const parsedTime = parse(event.time, "HH:mm", new Date());
 
-    console.log(event);
-
     try {
         await addDoc(collection(db, "schedule"), {
             home_team: event.homeTeam,

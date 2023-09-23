@@ -34,13 +34,13 @@ const validateForm = (values: IValues) => {
 const CreateEventForm = () => {
     const dispatch = useAppDispatch();
     const modalState = useAppSelector((state) => state.modal.isCreateEventModalOpen);
-    const division = useAppSelector((state) => state.division.divisionNumber);
+    const { divisionNumber } = useAppSelector((state) => state.division);
 
     const [teams, setTeams] = useState<string[]>([]);
 
     useEffect(() => {
         const getTeams = async () => {
-            const q = query(collection(db, "standings"), where("division", "==", division));
+            const q = query(collection(db, "standings"), where("division", "==", divisionNumber));
             const teamNamesArray = (await getDocs(q)).docs.map((doc) => doc.data().name);
             setTeams(teamNamesArray);
         };
@@ -48,12 +48,9 @@ const CreateEventForm = () => {
     }, []);
 
     const handleSubmit = (values: IValues, { resetForm }: any) => {
-        console.log(values);
-        addEvent({ ...values, division });
+        addEvent({ ...values, division: divisionNumber });
         resetForm();
     };
-
-    if (!teams || teams.length === 0) return null;
 
     return (
         <Modal isOpen={modalState}>

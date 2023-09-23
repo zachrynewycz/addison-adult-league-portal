@@ -1,23 +1,11 @@
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../config";
 
-interface IStanding {
-    name: string;
-    wins: number;
-    losses: number;
-    ot_losses: number;
-    points: number;
-    division: number;
-    games_played: number;
-    goals_for: number;
-    goals_against: number;
-}
-
-export const addTeamStanding = async (teamName: string, divisionNumber: number) => {
+export const addTeamStanding = async (name: string, division: number) => {
     try {
-        const docData: IStanding = {
-            name: teamName,
-            division: divisionNumber,
+        const docData = {
+            name: name,
+            division: division,
             wins: 0,
             losses: 0,
             ot_losses: 0,

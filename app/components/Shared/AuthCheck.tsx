@@ -6,7 +6,7 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
 
     // if (!user) return null;
 
-    return <div>{children}</div>;
+    return children;
 };
 
 export default AuthCheck;

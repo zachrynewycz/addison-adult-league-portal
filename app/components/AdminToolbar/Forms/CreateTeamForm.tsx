@@ -1,5 +1,5 @@
-import { Formik, Form, Field } from "formik";
-import { toggleUpdateScoreModal } from "@/app/redux/slices/modalSlice";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toggleCreateTeamModal } from "@/app/redux/slices/modalSlice";
 import { addTeamStanding } from "@/app/firebase/functions/addTeamStanding";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import Modal from "../../Shared/Modal";
@@ -14,9 +14,16 @@ const initialValues: IValues = {
     division: 1,
 };
 
+const validateForm = (values: IValues) => {
+    const errors: any = {};
+
+    if (!values.name) errors.name = "Name is required";
+    return errors;
+};
+
 const CreateTeamForm = () => {
     const dispatch = useAppDispatch();
-    const modalState = useAppSelector((state) => state.modal.isCreateTeamModalOpen);
+    const { isCreateTeamModalOpen } = useAppSelector((state) => state.modal);
 
     const handleSubmit = (values: IValues, { resetForm }: any) => {
         addTeamStanding(values.name, values.division);
@@ -24,20 +31,21 @@ const CreateTeamForm = () => {
     };
 
     return (
-        <Modal isOpen={modalState}>
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <Modal isOpen={isCreateTeamModalOpen}>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
                 <Form className="text-lg">
-                    <h1 className="font-calibre_semi_bold text-2xl">Add team to standing</h1>
+                    <h1 className="font-calibre_semi_bold text-2xl">Add team</h1>
 
                     <div className="flex gap-5">
                         <div>
-                            <label htmlFor="teamName">Team Name</label>
-                            <Field type="text" name="teamName" className="form-normal-input" />
+                            <label htmlFor="name">Team Name</label>
+                            <Field type="text" name="name" className="form-normal-input" />
+                            <ErrorMessage name="name" component="div" className="error-message" />
                         </div>
                         <div>
                             <label htmlFor="division">Division</label>
                             <Field name="division" id="division" as="select" className="form-normal-input">
-                                <option value="">Select Divison</option>
+                                <option value="">Select division</option>
                                 <option value={1}>1</option>
                                 <option value={2}>2</option>
                                 <option value={3}>3</option>
@@ -54,7 +62,7 @@ const CreateTeamForm = () => {
                     <button
                         type="button"
                         className="text-neutral-400 w-full mt-2 font-calibre_regular"
-                        onClick={() => dispatch(toggleUpdateScoreModal())}
+                        onClick={() => dispatch(toggleCreateTeamModal())}
                     >
                         Close
                     </button>

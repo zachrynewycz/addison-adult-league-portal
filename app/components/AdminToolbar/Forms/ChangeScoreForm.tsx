@@ -16,41 +16,42 @@ const initialValues = {
     status: "",
 };
 
-const ChangeScoreForm = () => {
+const ChangeScoreForm = ({ docId }: { docId: string }) => {
     const dispatch = useAppDispatch();
-    const modalState = useAppSelector((state) => state.modal.isUpdateScoreModalOpen);
+    const { isUpdateScoreModalOpen } = useAppSelector((state) => state.modal);
 
     const handleSubmit = (values: IScores, { resetForm }: any) => {
-        updateScore(`${values.homeScore} - ${values.awayScore} ${values.status}`, "");
+        updateScore(`${values.homeScore} - ${values.awayScore} ${values.status}`, docId);
         resetForm();
     };
 
     return (
-        <Modal isOpen={modalState}>
+        <Modal isOpen={isUpdateScoreModalOpen}>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 <Form className="text-lg">
                     <h1 className="font-calibre_semi_bold text-2xl">Update score</h1>
 
-                    <div className="flex gap-10">
+                    <div className="flex justify-around">
                         <div>
                             <label htmlFor="homeScore">Home Score</label>
-                            <Field
+                            <input
                                 type="number"
                                 name="homeScore"
                                 id="homeScore"
                                 placeholder="0"
+                                defaultValue={0}
                                 min={0}
                                 className="form-normal-input w-20 text-4xl"
                             />
                         </div>
-
                         <div>
                             <label htmlFor="awayScore">Away Score</label>
-                            <Field
+                            <input
                                 type="number"
                                 name="awayScore"
                                 id="awayScore"
                                 placeholder="0"
+                                defaultValue={0}
                                 min={0}
                                 className="form-normal-input w-20 text-4xl"
                             />
@@ -59,6 +60,7 @@ const ChangeScoreForm = () => {
 
                     <label htmlFor="status">Game Status</label>
                     <Field name="status" id="status" as="select" className="form-select">
+                        <option value="">Upcoming</option>
                         <option value="">Final</option>
                         <option value="OT">Final OT</option>
                         <option value="SO">Final SO</option>

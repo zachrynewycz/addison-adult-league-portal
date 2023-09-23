@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
+import { collection, query, where, orderBy, onSnapshot } from "firebase/firestore";
 import { useAppSelector } from "../redux/hooks";
 import { db } from "../firebase/config";
 
@@ -8,28 +8,18 @@ const useSchedule = () => {
     const { divisionNumber } = useAppSelector((state) => state.division);
 
     useEffect(() => {
-        const fetchSchedule = async () => {
-            const q = query(
-                collection(db, "schedule"),
-                where("division", "==", divisionNumber),
-                orderBy("date", "asc")
-            );
-            try {
-                const docSnapshot = await getDocs(q);
+        const scheduleRef = collection(db, "schedule");
+        const q = query(scheduleRef, where("division", "==", divisionNumber), orderBy("date", "asc"));
 
-                if (docSnapshot.size === 0) {
-                    setSchedule([]);
-                } else {
-                    const scheduleData = docSnapshot.docs.map((doc) => {
-                        return { id: doc.id, ...doc.data() };
-                    });
-                    setSchedule(scheduleData);
-                }
-            } catch (error) {
-                console.error("Error fetching schedule:", error);
-            }
-        };
-        fetchSchedule();
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const scheduleData: any[] = [];
+            querySnapshot.forEach((doc) => {
+                scheduleData.push({ id: doc.id, ...doc.data() });
+            });
+            setSchedule(scheduleData);
+        });
+
+        return () => unsubscribe();
     }, [divisionNumber]);
 
     return schedule;
