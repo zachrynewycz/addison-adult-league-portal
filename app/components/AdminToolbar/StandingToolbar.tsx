@@ -8,9 +8,7 @@ const StandingToolbar = () => {
     const dispatch = useAppDispatch();
 
     const handleResetStandings = () => {
-        const proceed = confirm("Are you sure you want to reset all standings");
-
-        if (proceed) {
+        if (confirm("Are you sure you want to reset all standings to 0")) {
             resetStandingsToZero();
         }
     };

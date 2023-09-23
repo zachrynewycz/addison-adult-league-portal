@@ -17,7 +17,7 @@ const initialValues: IValues = {
 const validateForm = (values: IValues) => {
     const errors: any = {};
 
-    if (!values.name) errors.name = "Name is required";
+    if (!values.name) errors.name = "Required";
     return errors;
 };
 

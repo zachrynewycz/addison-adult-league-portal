@@ -10,7 +10,9 @@ const Row = ({ eventData }: { eventData: any }) => {
             <td>{eventData.time}</td>
             <td>{format(parsedDate, "EEEE, MMM Mo")}</td>
             <td>{eventData.rink}</td>
-            <td>{eventData.score}</td>
+            <td>
+                {eventData.home_score} - {eventData.away_score} {eventData.status}
+            </td>
         </tr>
     );
 };

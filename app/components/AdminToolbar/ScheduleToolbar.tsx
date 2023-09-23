@@ -9,9 +9,7 @@ const ScheduleToolbar = () => {
     const { divisionNumber } = useAppSelector((state) => state.division);
 
     const handleClearAll = () => {
-        const proceed = confirm("You are about to delete all events in this divison. Continue?");
-
-        if (proceed) {
+        if (prompt("You are about to delete all events in this divison. Enter DELETE to continue") === "DELETE") {
             clearScheduleByDivision(divisionNumber);
         }
     };

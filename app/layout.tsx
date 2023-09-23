@@ -22,3 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </html>
     );
 }
+//Edit and delete functions for stadnings and schedule
+//remove scoreform / updatescores
+//add updateEvent
+//fix add event
