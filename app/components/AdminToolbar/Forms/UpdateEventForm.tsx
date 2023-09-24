@@ -1,173 +1,155 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { toggleCreateEventModal, toggleUpdateEventModal } from "@/app/redux/slices/modalSlice";
-import { useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
-import { db } from "@/app/firebase/config";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import Modal from "../../Shared/Modal";
-import { updateEvent } from "@/app/firebase/functions/updateEvent";
 
-interface IValues {
-    home_team: string;
-    away_team: string;
-    away_score: number;
-    home_score: number;
-    date: string;
-    time: string;
-    rink: string;
-    status: string;
-    division: number;
+import { Formik, Form, Field } from "formik";
+
+import { useAppSelector } from "@/app/redux/hooks";
+
+import { db } from "@/app/firebase/config";
+import { collection, doc, query, where } from "firebase/firestore";
+import { updateEvent } from "@/app/firebase/functions/updateEvent";
+import { useCollectionDataOnce, useDocumentDataOnce } from "react-firebase-hooks/firestore";
+
+interface Props {
+    docId: string;
+    editMode: boolean;
+    setEditMode: (value: boolean) => void;
 }
 
-const UpdateEventForm = ({ docId }: { docId: string }) => {
-    const dispatch = useAppDispatch();
-    const { isUpdateEventModalOpen } = useAppSelector((state) => state.modal);
+const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
     const { divisionNumber } = useAppSelector((state) => state.division);
 
-    const [teams, setTeams] = useState<string[]>([]);
-    const [initialValues, setInitailValues] = useState<IValues>({
-        home_team: "",
-        away_team: "",
-        away_score: 0,
-        home_score: 0,
-        date: "",
-        time: "",
-        rink: "",
-        status: "",
-        division: 1,
+    const ref = doc(db, "schedule", docId);
+    const [eventData, isLoadingEventData, eventFetchError] = useDocumentDataOnce(ref, {
+        initialValue: {
+            home_team: "",
+            away_team: "",
+            away_score: 0,
+            home_score: 0,
+            date: "",
+            time: "",
+            rink: "",
+            status: "",
+            division: 1,
+        },
     });
 
-    useEffect(() => {
-        const getDocData = async () => {
-            const docSnap = await getDoc(doc(db, "schedule", docId));
+    const q = query(collection(db, "standings"), where("division", "==", divisionNumber));
+    const [teamData, isLoadingTeamData, teamFetchError] = useCollectionDataOnce(q);
 
-            if (docSnap.exists()) {
-                const data: any = docSnap.data();
-                setInitailValues({ ...data });
-            }
-            alert("Error getting document data");
-        };
-        getDocData();
-    }, [docId]);
+    if (isLoadingEventData || isLoadingTeamData) return null;
 
-    useEffect(() => {
-        const getTeams = async () => {
-            const q = query(collection(db, "standings"), where("division", "==", divisionNumber));
-            const teamNamesArray = (await getDocs(q)).docs.map((doc) => doc.data().name);
-            setTeams(teamNamesArray);
-        };
-        getTeams();
-    }, [divisionNumber]);
+    if (teamFetchError || eventFetchError) {
+        console.error("There has been an error getting document data", teamFetchError);
+        setEditMode(false);
+    }
 
-    const handleSubmit = (values: IValues) => {
+    const handleSubmit = (values: any) => {
         updateEvent(values, docId);
     };
 
     return (
-        <>
-            <button className="" onClick={() => dispatch(toggleUpdateEventModal())}>
-                <img src="/icons/edit-3.svg" alt="edit" />
-            </button>
+        <Modal isOpen={editMode}>
+            <Formik initialValues={eventData} onSubmit={handleSubmit}>
+                <Form className="text-lg text-left font-calibre_regular">
+                    <h1 className="font-calibre_semi_bold text-2xl">Update event</h1>
 
-            <Modal isOpen={isUpdateEventModalOpen}>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    <Form className="text-lg">
-                        <h1 className="font-calibre_semi_bold text-2xl">Create new event</h1>
+                    <label htmlFor="home_team">Home Team</label>
+                    <Field name="home_team" id="home_team" as="select" className="form-select">
+                        <option value="">Select Home Team</option>
+                        {teamData?.map((team, idx) => (
+                            <option key={idx} value={team.name}>
+                                {team.name}
+                            </option>
+                        ))}
+                    </Field>
 
-                        <label htmlFor="home_team">Home Team</label>
-                        <Field name="home_team" id="home_team" as="select" className="form-select">
-                            <option value="">Select Home Team</option>
-                            {teams.map((team, idx) => (
-                                <option key={idx} value={team}>
-                                    {team}
-                                </option>
-                            ))}
-                        </Field>
+                    <label htmlFor="away_team">Away Team</label>
+                    <Field name="away_team" id="away_team" as="select" className="form-select">
+                        <option value="">Select Away Team</option>
+                        {teamData?.map((team, idx) => (
+                            <option key={idx} value={team.name}>
+                                {team.name}
+                            </option>
+                        ))}
+                    </Field>
 
-                        <label htmlFor="away_team">Away Team</label>
-                        <Field name="away_team" id="away_team" as="select" className="form-select">
-                            <option value="">Select Away Team</option>
-                            {teams.map((team, idx) => (
-                                <option key={idx} value={team}>
-                                    {team}
-                                </option>
-                            ))}
-                        </Field>
+                    <label htmlFor="rink">Rink</label>
+                    <Field name="rink" id="rink" as="select" className="form-select">
+                        <option value="">Select Rink</option>
+                        <option value="OLY">OLY</option>
+                        <option value="NHL">NHL</option>
+                    </Field>
 
-                        <label htmlFor="rink">Rink</label>
-                        <Field name="rink" id="rink" as="select" className="form-select">
-                            <option value="">Select Rink</option>
-                            <option value="OLY">OLY</option>
-                            <option value="NHL">NHL</option>
-                        </Field>
-
-                        <div className="flex items-center gap-10">
-                            <div>
-                                <label htmlFor="date">Date</label>
-                                <Field name="date" id="date" type="date" className="form-normal-input" />
-                                <ErrorMessage name="date" component="div" className="error-message" />
-                            </div>
-
-                            <div>
-                                <label htmlFor="time">Time</label>
-                                <Field name="time" id="time" type="time" className="form-normal-input" />
-                                <ErrorMessage name="time" component="div" className="error-message" />
-                            </div>
+                    <div className="flex items-center gap-10">
+                        <div>
+                            <label htmlFor="unformatted_date">Date</label>
+                            <Field
+                                name="unformatted_date"
+                                id="unformatted_date"
+                                type="date"
+                                className="form-normal-input"
+                            />
                         </div>
 
-                        <div className="flex justify-around">
-                            <div>
-                                <label htmlFor="home_score">Home Score</label>
-                                <input
-                                    type="number"
-                                    name="home_score"
-                                    id="home_score"
-                                    placeholder="0"
-                                    defaultValue={0}
-                                    min={0}
-                                    className="form-normal-input w-20 text-4xl"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="away_score">Away Score</label>
-                                <input
-                                    type="number"
-                                    name="away_score"
-                                    id="away_score"
-                                    placeholder="0"
-                                    defaultValue={0}
-                                    min={0}
-                                    className="form-normal-input w-20 text-4xl"
-                                />
-                            </div>
+                        <div>
+                            <label htmlFor="unformatted_time">Time</label>
+                            <Field
+                                name="unformatted_time"
+                                id="unformatted_time"
+                                type="time"
+                                className="form-normal-input"
+                            />
                         </div>
+                    </div>
 
-                        <label htmlFor="status">Game Status</label>
-                        <Field name="status" id="status" as="select" className="form-select">
-                            <option value="">Upcoming</option>
-                            <option value="">Final</option>
-                            <option value="OT">Final OT</option>
-                            <option value="SO">Final SO</option>
-                        </Field>
+                    <div className="flex justify-around">
+                        <div>
+                            <label htmlFor="home_score">Home Score</label>
+                            <Field
+                                type="number"
+                                name="home_score"
+                                id="home_score"
+                                min={0}
+                                className="form-normal-input w-20 text-4xl"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="away_score">Away Score</label>
+                            <Field
+                                type="number"
+                                name="away_score"
+                                id="away_score"
+                                min={0}
+                                className="form-normal-input w-20 text-4xl"
+                            />
+                        </div>
+                    </div>
 
-                        <button
-                            className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
-                            type="submit"
-                        >
-                            Update
-                        </button>
+                    <label htmlFor="status">Game Status</label>
+                    <Field name="status" id="status" as="select" className="form-select">
+                        <option value="">Upcoming</option>
+                        <option value="">Final</option>
+                        <option value="OT">Final OT</option>
+                        <option value="SO">Final SO</option>
+                    </Field>
 
-                        <button
-                            type="button"
-                            className="text-neutral-400 w-full mt-2 font-calibre_regular"
-                            onClick={() => dispatch(toggleCreateEventModal())}
-                        >
-                            Close
-                        </button>
-                    </Form>
-                </Formik>
-            </Modal>
-        </>
+                    <button
+                        className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
+                        type="submit"
+                    >
+                        Update
+                    </button>
+
+                    <button
+                        type="button"
+                        className="text-neutral-400 w-full mt-2 font-calibre_regular"
+                        onClick={() => setEditMode(!editMode)}
+                    >
+                        Close
+                    </button>
+                </Form>
+            </Formik>
+        </Modal>
     );
 };
 

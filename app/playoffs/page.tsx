@@ -3,15 +3,22 @@ import DivisionGroupSelection from "../components/DivisionGroupSelection/Divison
 import GoogleSheetFrame from "./GoogleSheetFrame";
 import { useAppSelector } from "../redux/hooks";
 import { getCurrentSeasonAndYear } from "../utils/dateUtils";
+import EditBracketButton from "./EditBracketButton";
 
 function PlayoffsPage() {
     const { divisionNumber } = useAppSelector((state) => state.division);
 
     return (
         <main className="py-10 mx-auto md:max-w-7xl">
-            <h1 className="font-calibre_semi_bold text-xl mb-5">D{divisionNumber} {getCurrentSeasonAndYear()} Playoff Bracket</h1>
-            <DivisionGroupSelection />
-            <GoogleSheetFrame division={divisionNumber}/>
+            <h1 className="font-calibre_semi_bold text-xl mb-5">
+                D{divisionNumber} {getCurrentSeasonAndYear()} Playoff Bracket
+            </h1>
+
+            <div className="flex justify-between">
+                <DivisionGroupSelection />
+                <EditBracketButton division={divisionNumber} />
+            </div>
+            <GoogleSheetFrame division={divisionNumber} />
         </main>
     );
 }

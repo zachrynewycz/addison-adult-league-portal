@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../config";
 import { format, parse } from "date-fns";
 
@@ -15,21 +15,14 @@ interface Event {
 }
 
 export const updateEvent = async (event: Event, docId: string) => {
-    const parsedTime = parse(event.time, "HH:mm", new Date());
-
+    console.log(event);
     try {
         const ref = doc(db, "schedule", docId);
 
         await updateDoc(ref, {
-            home_team: event.home_team,
-            away_team: event.away_team,
-            home_score: event.home_score,
-            away_score: event.away_score,
-            division: event.division,
+            ...event,
             date: format(new Date(`${event.date} ${event.time}`), "MMMM d, yyyy 'at' h:mm:ss a zzzz"),
-            time: format(parsedTime, "h:mm a"),
-            rink: event.rink,
-            status: event.status,
+            time: format(parse(event.time, "HH:mm", new Date()), "h:mm a"),
         });
     } catch (error) {
         console.error("Error adding document:", error);

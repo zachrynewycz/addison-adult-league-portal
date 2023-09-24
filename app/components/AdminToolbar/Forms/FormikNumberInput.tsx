@@ -1,3 +1,5 @@
+import { Field } from "formik";
+
 interface Props {
     name: string;
     label: string;
@@ -6,14 +8,7 @@ interface Props {
 const FormikNumberInput = ({ name, label }: Props) => (
     <div>
         <label htmlFor={name}>{label}</label>
-        <input
-            type="number"
-            name={name}
-            id={name}
-            defaultValue={0}
-            min={0}
-            className="form-normal-input w-20 text-4xl"
-        />
+        <Field type="number" name={name} id={name} min={0} className="form-normal-input w-20 text-4xl" />
     </div>
 );
 

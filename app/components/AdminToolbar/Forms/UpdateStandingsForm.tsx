@@ -1,99 +1,73 @@
-import { db } from "@/app/firebase/config";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
-import { doc, getDoc } from "firebase/firestore";
 import { Form, Formik } from "formik";
-import { useEffect, useState } from "react";
-import Modal from "../../Shared/Modal";
-import { toggleUpdateStandingModal } from "@/app/redux/slices/modalSlice";
 import FormikNumberInput from "./FormikNumberInput";
-import { updateStanding } from "@/app/firebase/functions/updateStanding";
 
-interface IValues {
-    name: string;
-    division: number;
-    games_played: number;
-    wins: number;
-    losses: number;
-    ot_losses: number;
-    points: number;
-    goals_for: number;
-    goals_against: number;
+import { updateStanding } from "@/app/firebase/functions/updateStanding";
+import { db } from "@/app/firebase/config";
+import { doc } from "firebase/firestore";
+import { useDocumentData, useDocumentDataOnce } from "react-firebase-hooks/firestore";
+
+import Modal from "../../Shared/Modal";
+
+interface Props {
+    docId: string;
+    editMode: boolean;
+    setEditMode: (value: boolean) => void;
 }
 
-const UpdateStandingForm = ({ docId }: { docId: string }) => {
-    const dispatch = useAppDispatch();
-    const { isUpdateEventModalOpen } = useAppSelector((state) => state.modal);
-
-    const [initialValues, setInitailValues] = useState<IValues>({
-        name: "",
-        division: 1,
-        wins: 0,
-        losses: 0,
-        ot_losses: 0,
-        games_played: 0,
-        goals_against: 0,
-        goals_for: 0,
-        points: 0,
+const UpdateStandingForm = ({ docId, editMode, setEditMode }: Props) => {
+    const ref = doc(db, "standings", docId);
+    const [standingData, isLoadingStanding] = useDocumentData(ref, {
+        initialValue: {
+            name: "",
+            division: 1,
+            wins: 0,
+            losses: 0,
+            ot_losses: 0,
+            games_played: 0,
+            goals_against: 0,
+            goals_for: 0,
+            points: 0,
+        },
     });
 
-    useEffect(() => {
-        const getDocData = async () => {
-            try {
-                const docSnap = await getDoc(doc(db, "standings", docId));
+    if (isLoadingStanding) return null;
 
-                if (docSnap.exists()) {
-                    const data: any = docSnap.data();
-                    setInitailValues({ ...data });
-                }
-            } catch (error) {
-                alert("Error getting document data");
-                toggleUpdateStandingModal();
-            }
-        };
-        getDocData();
-    }, [docId]);
-
-    const handleSubmit = (values: IValues) => {
-        updateStanding(values, docId)
+    const handleSubmit = (values: any) => {
+        console.log(values);
+        updateStanding(values, docId);
     };
 
     return (
-        <>
-            <button className="" onClick={() => dispatch(toggleUpdateStandingModal())}>
-                <img src="/icons/edit-3.svg" alt="edit" />
-            </button>
+        <Modal isOpen={editMode}>
+            <Formik initialValues={standingData} onSubmit={handleSubmit}>
+                <Form className="text-lg">
+                    <h1 className="font-calibre_semi_bold text-2xl">Update standings</h1>
 
-            <Modal isOpen={isUpdateEventModalOpen}>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    <Form className="text-lg">
-                        <h1 className="font-calibre_semi_bold text-2xl">Update standings</h1>
+                    <div className="flex gap-10 font-calibre_regular">
+                        <FormikNumberInput label="Wins" name="wins" />
+                        <FormikNumberInput label="Losses" name="losses" />
+                        <FormikNumberInput label="OT Losses" name="ot_losses" />
+                        <FormikNumberInput label="Goals For" name="goals_for" />
+                        <FormikNumberInput label="Goals Against" name="goals_against" />
+                    </div>
 
-                        <div className="flex justify-around">
-                            <FormikNumberInput label="Wins" name="wins" />
-                            <FormikNumberInput label="Losses" name="losses" />
-                            <FormikNumberInput label="OT Losses" name="ot_losses" />
-                            <FormikNumberInput label="Goals For" name="goals_for" />
-                            <FormikNumberInput label="Goals Against" name="goals_against" />
-                        </div>
+                    <button
+                        className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
+                        type="submit"
+                    >
+                        Update
+                    </button>
 
-                        <button
-                            className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
-                            type="submit"
-                        >
-                            Update
-                        </button>
-
-                        <button
-                            type="button"
-                            className="text-neutral-400 w-full mt-2 font-calibre_regular"
-                            onClick={() => dispatch(toggleUpdateStandingModal())}
-                        >
-                            Close
-                        </button>
-                    </Form>
-                </Formik>
-            </Modal>
-        </>
+                    <button
+                        type="button"
+                        className="text-neutral-400 w-full mt-2 font-calibre_regular"
+                        onClick={() => setEditMode(false)}
+                    >
+                        Close
+                    </button>
+                </Form>
+            </Formik>
+        </Modal>
     );
 };
 
