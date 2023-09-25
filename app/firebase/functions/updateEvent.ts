@@ -12,17 +12,21 @@ interface Event {
     time: string;
     rink: string;
     status: string;
+    unformatted_time: string;
+    unformatted_date: string;
 }
 
 export const updateEvent = async (event: Event, docId: string) => {
-    console.log(event);
     try {
         const ref = doc(db, "schedule", docId);
 
         await updateDoc(ref, {
             ...event,
-            date: format(new Date(`${event.date} ${event.time}`), "MMMM d, yyyy 'at' h:mm:ss a zzzz"),
-            time: format(parse(event.time, "HH:mm", new Date()), "h:mm a"),
+            date: format(
+                new Date(`${event.unformatted_date} ${event.unformatted_time}`),
+                "MMMM d, yyyy 'at' h:mm:ss a zzzz"
+            ),
+            time: format(parse(event.unformatted_time, "HH:mm", new Date()), "h:mm a"),
         });
     } catch (error) {
         console.error("Error adding document:", error);

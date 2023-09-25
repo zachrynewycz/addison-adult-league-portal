@@ -2,9 +2,9 @@ import { auth } from "@/app/firebase/config";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const AuthCheck = ({ children }: { children: React.ReactNode }) => {
-    // const [user] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
-    // if (!user) return null;
+    if (!user) return null;
 
     return children;
 };

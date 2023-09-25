@@ -30,6 +30,8 @@ const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
             rink: "",
             status: "",
             division: 1,
+            unformatted_date: "",
+            unformatted_time: "",
         },
     });
 

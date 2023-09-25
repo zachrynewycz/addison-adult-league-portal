@@ -33,7 +33,6 @@ const UpdateStandingForm = ({ docId, editMode, setEditMode }: Props) => {
     if (isLoadingStanding) return null;
 
     const handleSubmit = (values: any) => {
-        console.log(values);
         updateStanding(values, docId);
     };
 
