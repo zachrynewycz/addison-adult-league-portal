@@ -26,7 +26,7 @@ const CreateTeamForm = () => {
     const { isCreateTeamModalOpen } = useAppSelector((state) => state.modal);
 
     const handleSubmit = (values: IValues, { resetForm }: any) => {
-        addTeamStanding(values.name, values.division);
+        addTeamStanding(values.name, Number(values.division));
         resetForm();
     };
 
