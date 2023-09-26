@@ -6,13 +6,7 @@ import Modal from "../../Shared/Modal";
 
 interface IValues {
     name: string;
-    division: number;
 }
-
-const initialValues: IValues = {
-    name: "",
-    division: 1,
-};
 
 const validateForm = (values: IValues) => {
     const errors: any = {};
@@ -24,9 +18,10 @@ const validateForm = (values: IValues) => {
 const CreateTeamForm = () => {
     const dispatch = useAppDispatch();
     const { isCreateTeamModalOpen } = useAppSelector((state) => state.modal);
+    const { divisionNumber } = useAppSelector((state) => state.division);
 
     const handleSubmit = (values: IValues, { resetForm }: any) => {
-        addTeamStanding(values.name, Number(values.division));
+        addTeamStanding(values.name, divisionNumber);
         resetForm();
     };
 
@@ -37,25 +32,14 @@ const CreateTeamForm = () => {
             </button>
 
             <Modal isOpen={isCreateTeamModalOpen}>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit} validate={validateForm}>
+                <Formik initialValues={{ name: "" }} onSubmit={handleSubmit} validate={validateForm}>
                     <Form className="text-lg">
                         <h1 className="font-calibre_semi_bold text-2xl">Add team</h1>
 
-                        <div className="flex gap-5">
-                            <div>
-                                <label htmlFor="name">Team Name</label>
-                                <Field type="text" name="name" className="form-normal-input" />
-                                <ErrorMessage name="name" component="div" className="error-message" />
-                            </div>
-                            <div>
-                                <label htmlFor="division">Division</label>
-                                <Field name="division" id="division" as="select" className="form-normal-input">
-                                    <option value="">Select division</option>
-                                    <option value={1}>1</option>
-                                    <option value={2}>2</option>
-                                    <option value={3}>3</option>
-                                </Field>
-                            </div>
+                        <div>
+                            <label htmlFor="name">Team Name</label>
+                            <Field type="text" name="name" className="form-normal-input" />
+                            <ErrorMessage name="name" component="div" className="error-message" />
                         </div>
 
                         <button
