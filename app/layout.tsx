@@ -5,7 +5,7 @@ import Nav from "./components/Nav/Nav";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
     title: "Addison Adult League Portal",
     description: "Updated league schedule and standings",
 };
