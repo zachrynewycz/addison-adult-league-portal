@@ -6,7 +6,7 @@ import ScheduleTable from "./ScheduleTable/ScheduleTable";
 
 function SchedulePage() {
     return (
-        <main className="py-10 mx-auto md:max-w-7xl">
+        <main className="py-10 mx-auto md:max-w-7xl px-5 xl:px-0">
             <h1 className="font-calibre_semi_bold text-xl mb-5">{getCurrentSeasonAndYear()} Season Schedule</h1>
 
             <div className="flex justify-between">

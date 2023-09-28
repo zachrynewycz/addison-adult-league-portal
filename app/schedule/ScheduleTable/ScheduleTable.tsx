@@ -11,12 +11,12 @@ const ScheduleTable = () => {
 
     return (
         <table className="text-neutral-700 mt-10 font-calibre_light schedule-table">
-            <thead className="text-sm">
+            <thead className="text-sm text-left">
                 <tr>
                     <th>HOME</th>
                     <th>AWAY</th>
-                    <th>TIME</th>
                     <th>DATE</th>
+                    <th>TIME</th>
                     <th>RINK</th>
                     <th>SCORE</th>
                 </tr>

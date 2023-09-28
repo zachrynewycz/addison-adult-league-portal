@@ -6,7 +6,7 @@ const Nav = () => {
     const pathname = useSelectedLayoutSegment();
 
     return (
-        <nav className="w-full py-4 bg-neutral-800 text-neutral-200 font-calibre_light text-lg grid-cols-3 grid">
+        <nav className="w-full py-3.5 bg-neutral-800 text-neutral-200 font-calibre_light text-lg grid-cols-3 grid">
             <ul className="hidden md:flex mx-auto gap-16 col-start-2">
                 <li className="flex-1">
                     <a

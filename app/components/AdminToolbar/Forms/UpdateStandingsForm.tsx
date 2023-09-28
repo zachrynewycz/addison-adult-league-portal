@@ -4,7 +4,7 @@ import FormikNumberInput from "./FormikNumberInput";
 import { updateStanding } from "@/app/firebase/functions/updateStanding";
 import { db } from "@/app/firebase/config";
 import { doc } from "firebase/firestore";
-import { useDocumentData, useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 
 import Modal from "../../Shared/Modal";
 
@@ -34,6 +34,7 @@ const UpdateStandingForm = ({ docId, editMode, setEditMode }: Props) => {
 
     const handleSubmit = (values: any) => {
         updateStanding(values, docId);
+        setEditMode(false);
     };
 
     return (

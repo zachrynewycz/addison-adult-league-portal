@@ -6,7 +6,7 @@ const Row = ({ teamData }: { teamData: any }) => {
 
     return (
         <tr>
-            <td>{teamData.name}</td>
+            <td className="font-calibre_regular font-bold">{teamData.name}</td>
             <td>{teamData.games_played}</td>
             <td>{teamData.wins}</td>
             <td>{teamData.losses}</td>

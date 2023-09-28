@@ -46,6 +46,8 @@
 
     table {
         width: 100%;
+        min-width: 450px;
+        overflow-x: hidden;
     }
 
     thead {
@@ -78,13 +80,17 @@
     }
 
     .schedule-table th {
-        width: calc(100% / 6);
+        width: calc(100% / 5.7);
     }
 
     .schedule-table th,
     .schedule-table td {
-        text-align: center;
         padding: 13px 0;
+    }
+
+    .schedule-table th:first-child,
+    .schedule-table td:first-child {
+        padding: 13px 20px;
     }
 
     .error-message {
