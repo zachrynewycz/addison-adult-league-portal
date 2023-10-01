@@ -1,6 +1,5 @@
 "use client";
 import "./globals.css";
-import "./print.css";
 import type { Metadata } from "next";
 import Nav from "./components/Nav/Nav";
 import store from "./redux/store";

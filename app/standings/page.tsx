@@ -5,7 +5,7 @@ import StandingTable from "./StandingTable/StandingTable";
 
 function StandingsPage() {
     return (
-        <main className="py-10 mx-auto md:max-w-7xl px-5 xl:px-0">
+        <main className="py-10 mx-auto md:max-w-7xl px-10 xl:px-0">
             <h1 className="font-calibre_semi_bold text-xl mb-5">Adult League Standings</h1>
 
             <div className="flex justify-between">

@@ -10,7 +10,7 @@ const ScheduleTable = () => {
     }
 
     return (
-        <table className="text-neutral-700 mt-10 font-calibre_light schedule-table">
+        <table className="text-neutral-700 mt-10 font-calibre_light schedule-table overflow-x-scroll whitespace-nowrap">
             <thead className="text-sm text-left">
                 <tr>
                     <th>HOME</th>

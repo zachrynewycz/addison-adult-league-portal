@@ -81,6 +81,7 @@
 
     .schedule-table th {
         width: calc(100% / 5.7);
+        min-width: 100px;
     }
 
     .schedule-table th,
@@ -105,7 +106,7 @@
         margin: 0 5px;
     }
     .toolbar-btn:hover {
-        transform: scale(1.05);
+        border: 1.5px solid #7f7f7f;
     }
 
     .toolbar-btn > img {
@@ -113,5 +114,28 @@
         padding-bottom: 0.125rem;
         width: 1.25rem;
         margin-left: 0.25rem;
+    }
+
+    @media print {
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+            margin: 0;
+            font-size: small;
+            border: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1,
+        div,
+        button,
+        th:last-child,
+        td:last-child {
+            display: none;
+        }
     }
 }

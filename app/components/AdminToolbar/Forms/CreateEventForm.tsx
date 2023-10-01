@@ -20,7 +20,7 @@ const initialValues: IValues = {
     away_team: "",
     date: "",
     time: "",
-    rink: "",
+    rink: "OLY",
 };
 
 const validateForm = (values: IValues) => {
@@ -74,7 +74,6 @@ const CreateEventForm = () => {
 
                     <label htmlFor="rink">Rink</label>
                     <Field name="rink" id="rink" as="select" className="form-select">
-                        <option value="">Select Rink</option>
                         <option value="OLY">OLY</option>
                         <option value="NHL">NHL</option>
                     </Field>

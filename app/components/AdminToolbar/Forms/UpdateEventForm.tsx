@@ -1,13 +1,11 @@
 import Modal from "../../Shared/Modal";
-
 import { Formik, Form, Field } from "formik";
-
 import { useAppSelector } from "@/app/redux/hooks";
-
 import { db } from "@/app/firebase/config";
 import { collection, doc, query, where } from "firebase/firestore";
 import { updateEvent } from "@/app/firebase/functions/updateEvent";
 import { useCollectionDataOnce, useDocumentDataOnce } from "react-firebase-hooks/firestore";
+import { format } from "date-fns";
 
 interface Props {
     docId: string;
@@ -19,39 +17,29 @@ const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
     const { divisionNumber } = useAppSelector((state) => state.division);
 
     const ref = doc(db, "schedule", docId);
-    const [eventData, isLoadingEventData, eventFetchError] = useDocumentDataOnce(ref, {
-        initialValue: {
-            home_team: "",
-            away_team: "",
-            away_score: 0,
-            home_score: 0,
-            date: "",
-            time: "",
-            rink: "",
-            status: "",
-            division: 1,
-            unformatted_date: "",
-            unformatted_time: "",
-        },
-    });
-
     const q = query(collection(db, "standings"), where("division", "==", divisionNumber));
+    const [eventData, isLoadingEventData, eventFetchError] = useDocumentDataOnce(ref);
     const [teamData, isLoadingTeamData, teamFetchError] = useCollectionDataOnce(q);
 
     if (isLoadingEventData || isLoadingTeamData) return null;
 
+    const iniitalValues = {
+        ...eventData,
+        date: format(eventData?.date.toDate(), "yyyy-MM-dd"),
+    };
+
     if (teamFetchError || eventFetchError) {
         console.error("There has been an error getting document data", teamFetchError);
-        setEditMode(false);
     }
 
     const handleSubmit = (values: any) => {
         updateEvent(values, docId);
+        setEditMode(false);
     };
 
     return (
         <Modal isOpen={editMode}>
-            <Formik initialValues={eventData} onSubmit={handleSubmit}>
+            <Formik initialValues={iniitalValues} onSubmit={handleSubmit}>
                 <Form className="text-lg text-left font-calibre_regular">
                     <h1 className="font-calibre_semi_bold text-2xl">Update event</h1>
 
@@ -84,23 +72,13 @@ const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
 
                     <div className="flex items-center gap-10">
                         <div>
-                            <label htmlFor="unformatted_date">Date</label>
-                            <Field
-                                name="unformatted_date"
-                                id="unformatted_date"
-                                type="date"
-                                className="form-normal-input"
-                            />
+                            <label htmlFor="date">Date</label>
+                            <Field name="date" id="date" type="date" className="form-normal-input" />
                         </div>
 
                         <div>
-                            <label htmlFor="unformatted_time">Time</label>
-                            <Field
-                                name="unformatted_time"
-                                id="unformatted_time"
-                                type="time"
-                                className="form-normal-input"
-                            />
+                            <label htmlFor="time">Time</label>
+                            <Field name="time" id="time" type="time" className="form-normal-input" />
                         </div>
                     </div>
 
@@ -129,25 +107,28 @@ const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
 
                     <label htmlFor="status">Game Status</label>
                     <Field name="status" id="status" as="select" className="form-select">
-                        <option value="">Final</option>
+                        <option value="">Upcoming</option>
+                        <option value="Final">Final</option>
                         <option value="OT">Final OT</option>
                         <option value="SO">Final SO</option>
                     </Field>
 
-                    <button
-                        className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
-                        type="submit"
-                    >
-                        Update
-                    </button>
+                    <div className="flex flex-col">
+                        <button
+                            className="bg-neutral-800 text-white rounded-md py-2 text-lg w-full font-calibre_regular mt-5"
+                            type="submit"
+                        >
+                            Update
+                        </button>
 
-                    <button
-                        type="button"
-                        className="text-neutral-400 w-full mt-2 font-calibre_regular"
-                        onClick={() => setEditMode(!editMode)}
-                    >
-                        Close
-                    </button>
+                        <button
+                            type="button"
+                            className="text-neutral-400 w-full mt-2 font-calibre_regular"
+                            onClick={() => setEditMode(!editMode)}
+                        >
+                            Close
+                        </button>
+                    </div>
                 </Form>
             </Formik>
         </Modal>

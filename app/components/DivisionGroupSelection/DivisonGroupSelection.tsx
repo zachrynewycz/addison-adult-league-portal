@@ -13,13 +13,13 @@ const DivisionGroupSelection = () => {
     ];
 
     return (
-        <div className="bg-[#f0f0ee] w-fit flex rounded-md font-calibre_regular">
+        <div className="bg-[#f0f0ee] flex rounded-md font-calibre_regular">
             {options.map(({ label, value }) => (
                 <button
                     className={`${
                         divisionNumber === value
-                            ? "px-8 bg-white border-neutral-300 border-[1px] rounded-md pt-2 pb-1"
-                            : "px-8 pt-2 pb-1"
+                            ? "px-8 bg-white border-neutral-300 border-[1px] rounded-md pt-2 pb-1 whitespace-nowrap"
+                            : "px-8 pt-2 pb-1 whitespace-nowrap"
                     }`}
                     key={label}
                     onClick={() => dispatch(setDivisionNumber(value))}
