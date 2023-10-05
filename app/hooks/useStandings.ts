@@ -9,7 +9,12 @@ const useStandings = () => {
 
     useEffect(() => {
         const standingsRef = collection(db, "standings");
-        const q = query(standingsRef, where("division", "==", divisionNumber), orderBy("points", "desc"));
+        const q = query(
+            standingsRef,
+            where("division", "==", divisionNumber),
+            orderBy("points", "desc"),
+            orderBy("losses", "asc")
+        );
 
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const standingsData: any[] = [];

@@ -9,7 +9,7 @@ const StandingTable = () => {
     }
 
     return (
-        <table className="text-neutral-700 mt-10 standings-table font-calibre_light overflow-x-scroll whitespace-nowrap">
+        <table className="text-neutral-700 standings-table overflow-x-scroll">
             <thead className="text-sm">
                 <tr>
                     <th>TEAM</th>

@@ -4,7 +4,7 @@ import { setDivisionNumber } from "@/app/redux/slices/divisionSlice";
 
 const DivisionGroupSelection = () => {
     const dispatch = useAppDispatch();
-    const divisionNumber = useAppSelector((state) => state.division.divisionNumber);
+    const { divisionNumber } = useAppSelector((state) => state.division);
 
     const options = [
         { label: "Division 1", value: 1 },

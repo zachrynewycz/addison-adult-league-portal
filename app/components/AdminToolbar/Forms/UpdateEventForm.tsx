@@ -107,8 +107,7 @@ const UpdateEventForm = ({ docId, editMode, setEditMode }: Props) => {
 
                     <label htmlFor="status">Game Status</label>
                     <Field name="status" id="status" as="select" className="form-select">
-                        <option value="">Upcoming</option>
-                        <option value="Final">Final</option>
+                        <option value="">Final</option>
                         <option value="OT">Final OT</option>
                         <option value="SO">Final SO</option>
                     </Field>
