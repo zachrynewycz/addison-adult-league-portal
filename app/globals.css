@@ -85,12 +85,12 @@
 
     .schedule-table th {
         width: calc(100% / 5.7);
-        min-width: 100px;
     }
 
     .schedule-table th,
     .schedule-table td {
-        padding: 12px 0;
+        padding: 12px 10px;
+        min-width: 100px;
     }
 
     .schedule-table th:first-child,
@@ -100,7 +100,7 @@
 
     .schedule-table th:nth-child(-n + 2),
     .schedule-table td:nth-child(-n + 2) {
-        width: calc(100% / 4);
+        width: calc(100% / 4.5);
     }
 
     .error-message {
