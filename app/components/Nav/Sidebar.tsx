@@ -9,7 +9,7 @@ const Sidebar = () => {
 
     return (
         <>
-            <button className="inline md:hidden w-10" onClick={() => dispatch(toggleSidebar())}>
+            <button className="block md:hidden ml-auto" onClick={() => dispatch(toggleSidebar())}>
                 <img src="/icons/menu.svg" alt="menu" />
             </button>
 
