@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import Row from "./Row";
 import useSchedule from "@/app/hooks/useSchedule";
 
@@ -23,7 +24,20 @@ const ScheduleTable = () => {
             </thead>
             <tbody>
                 {schedule.map((doc) => (
-                    <Row key={doc.id} eventData={doc} />
+                    <React.Fragment key={doc.id}>
+                        {doc?.weekSeparator ? (
+                            <tr className="font-calibre_light text-neutral-700" key={doc.weekKey}>
+                                <td>Week {doc.weekKey}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        ) : (
+                            <Row key={doc.id} eventData={doc} />
+                        )}
+                    </React.Fragment>
                 ))}
             </tbody>
         </table>

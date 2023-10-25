@@ -11,7 +11,7 @@ interface Props {
 const EditAndDeleteButtons = ({ docId, editMode, setEditMode }: Props) => {
     return (
         <AuthCheck>
-            <td className="flex gap-4">
+            <div className="flex gap-4">
                 <button className="w-5" onClick={() => setEditMode(true)}>
                     <img src="/icons/edit-3.svg" alt="edit" />
                 </button>
@@ -21,7 +21,7 @@ const EditAndDeleteButtons = ({ docId, editMode, setEditMode }: Props) => {
                 <button className="w-5" onClick={() => deleteEvent(docId)}>
                     <img src="/icons/file-minus.svg" alt="delete" />
                 </button>
-            </td>
+            </div>
         </AuthCheck>
     );
 };

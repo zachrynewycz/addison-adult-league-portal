@@ -6,8 +6,8 @@ import store from "./redux/store";
 import { Provider } from "react-redux";
 
 const metadata: Metadata = {
-    title: "Addison Adult League Portal",
-    description: "Updated league schedule and standings",
+    title: "Addison Adult League",
+    description: "Up to date league schedule and standings",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
