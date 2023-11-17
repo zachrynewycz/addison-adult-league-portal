@@ -6,7 +6,7 @@ Built a platform for Addison Ice LLC for them to manage their adult hockey leagu
 
 ### Tech Used
 
-React, Redux, TailwindCSS, Next.js, Firebase, Formik
+React, Redux, TailwindCSS, Next.js, Firebase, Formik, Google OAUTH
 
 
 
